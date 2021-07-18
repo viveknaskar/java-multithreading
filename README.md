@@ -15,4 +15,8 @@ For implementing multithreading, there are two ways in which threads can be crea
    of the variable but instead, it reads the variable from the main memory. It is used to modify 
    the value of a variable by different threads.
    
+4. Synchronized blocks are marked with the synchronized keyword. All synchronized blocks synchronized on the same 
+   object can only have one thread executing inside them at a time. All other threads attempting to enter 
+   the synchronized block are blocked until the thread inside the synchronized block exits the block.
+   
 
