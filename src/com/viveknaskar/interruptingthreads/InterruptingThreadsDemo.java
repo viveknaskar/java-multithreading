@@ -11,7 +11,10 @@ public class InterruptingThreadsDemo {
             Random random = new Random();
 
             for(int i=0; i<1E8; i++) {
-                if(Thread.currentThread().isInterrupted()) {
+
+                try {
+                    Thread.sleep(1);
+                } catch (InterruptedException e) {
                     System.out.println("Interrupted!!!");
                     break;
                 }
