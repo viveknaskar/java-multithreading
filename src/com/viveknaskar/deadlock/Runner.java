@@ -39,8 +39,9 @@ public class Runner {
         Random random = new Random();
         for (int i=0; i<10000; i++) {
 
-            lock1.lock();
+            /** Changing the order of locks can cause deadlock condition in threads. **/
             lock2.lock();
+            lock1.lock();
             try {
                 Account.transfer(accountTwo, accountOne, random.nextInt(100));
             }
