@@ -1,5 +1,7 @@
 package com.viveknaskar.reentrantlocks;
 
+import java.util.Scanner;
+import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -17,6 +19,12 @@ public class Runner {
     private Lock lock = new ReentrantLock();
 
     /**
+     * A Condition interface allows a thread to pause execution until the provided condition is true.
+     * A Condition object must be tied to a Lock and acquired through the newCondition() method.
+     */
+    private Condition condition = lock.newCondition();
+
+    /**
      * Both the threads will be iterated 10000 times.
      * When one thread is incremented, the other thread will wait.
      */
@@ -28,6 +36,13 @@ public class Runner {
 
     public void firstThread() throws InterruptedException {
         lock.lock();
+
+        System.out.println("Waiting...");
+        /**
+         * This method makes the current thread to wait until it is signalled or interrupted.
+         */
+        condition.await();
+        System.out.println("Woken up!!!");
 
         /**
          * Putting increment() in try in case when there are exceptions,
@@ -45,6 +60,16 @@ public class Runner {
 
         Thread.sleep(2000);
         lock.lock();
+
+        System.out.println("Press the return key...");
+        new Scanner(System.in).nextLine();
+        System.out.println("Return key pressed!");
+
+        /**
+         * This method wakes up one waiting thread.
+         */
+        condition.signal();
+
         try {
             increment();
         }
@@ -56,6 +81,5 @@ public class Runner {
     public void finished() {
         System.out.println("Count is: " + count);
     }
-
 
 }
