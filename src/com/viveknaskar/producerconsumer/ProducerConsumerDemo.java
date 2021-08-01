@@ -1,4 +1,4 @@
-package com.viveknaskar;
+package com.viveknaskar.producerconsumer;
 
 import java.util.Random;
 import java.util.concurrent.ArrayBlockingQueue;
