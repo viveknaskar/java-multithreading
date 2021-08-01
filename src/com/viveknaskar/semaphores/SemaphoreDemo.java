@@ -1,6 +1,8 @@
 package com.viveknaskar.semaphores;
 
-import java.util.concurrent.Semaphore;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 /**
  * A semaphore uses a counter to regulate access to a shared resource.
@@ -13,17 +15,15 @@ public class SemaphoreDemo {
 
     public static void main(String[] args) throws Exception {
 
-        /**
-         * Semaphores are used to control access to resources
-         */
-        Semaphore sem = new Semaphore(1);
+        ExecutorService executor = Executors.newCachedThreadPool();
 
-        sem.release();
+        for(int i=0; i<200; i++) {
+            executor.submit(() -> {
+                Connection.getInstance().connect();
+            });
+        }
 
-        sem.acquire();
-
-        System.out.println("Available permits: " + sem.availablePermits());
-
-
+        executor.shutdown();
+        executor.awaitTermination(1, TimeUnit.DAYS);
     }
 }
