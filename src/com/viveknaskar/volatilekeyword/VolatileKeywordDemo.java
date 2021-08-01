@@ -1,4 +1,4 @@
-package com.viveknaskar;
+package com.viveknaskar.volatilekeyword;
 import java.util.Scanner;
 
 class Processor extends Thread {
