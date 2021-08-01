@@ -1,4 +1,4 @@
-package com.viveknaskar;
+package com.viveknaskar.countdownlatch;
 
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
