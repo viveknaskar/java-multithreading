@@ -12,6 +12,34 @@ public class Runner {
     private Lock lock1 = new ReentrantLock();
     private Lock lock2 = new ReentrantLock();
 
+    private void acquireLocks(Lock firstLock, Lock secondLock) throws InterruptedException, IllegalMonitorStateException {
+        while(true) {
+            /** Acquire locks **/
+            boolean gotFirstLock = false;
+            boolean gotSecondLock = false;
+
+            try {
+                /**  tryLock() will return true if it acquires the lock.  **/
+                gotFirstLock = firstLock.tryLock();
+                gotSecondLock = firstLock.tryLock();
+            }
+            finally {
+                if(gotFirstLock && gotSecondLock) {
+                    return;
+                }
+                if(gotFirstLock) {
+                    firstLock.unlock();
+                }
+                if(gotSecondLock) {
+                    secondLock.unlock();
+                }
+            }
+
+            /** Locks not acquired **/
+            Thread.sleep(1);
+        }
+    }
+
     public void firstThread() throws InterruptedException {
 
         /**
@@ -20,8 +48,8 @@ public class Runner {
         Random random = new Random();
         for (int i=0; i<10000; i++) {
 
-            lock1.lock();
-            lock2.lock();
+            acquireLocks(lock1, lock2);
+
             try {
                 Account.transfer(accountOne, accountTwo, random.nextInt(100));
             }
@@ -39,9 +67,8 @@ public class Runner {
         Random random = new Random();
         for (int i=0; i<10000; i++) {
 
-            /** Changing the order of locks can cause deadlock condition in threads. **/
-            lock2.lock();
-            lock1.lock();
+            acquireLocks(lock2, lock1);
+
             try {
                 Account.transfer(accountTwo, accountOne, random.nextInt(100));
             }
